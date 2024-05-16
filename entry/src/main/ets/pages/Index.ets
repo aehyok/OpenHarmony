@@ -5,6 +5,20 @@ import { ToggleView } from "../components/form/ToggleView"
 import { CustomDialogExample } from "./CustomDialogExample"
 import { SwiperExample } from "./SwiperList"
 import { Course } from "./Course"
+import axios, { AxiosResponse } from "@ohos/axios"
+interface ResponseData {
+  code: number;
+  message: string;
+  data: CaptchaData;
+  timestamp: string;
+}
+
+interface CaptchaData {
+  captcha: string;
+  key: string;
+  expireTime: string;
+}
+
 
 @Entry
 @Component
@@ -78,6 +92,10 @@ struct Index {
               Button('click me')
                 .onClick(() => {
                   this.dialogController.open()
+                  axios.get("http://101.200.243.192:8080/api/basic/Token/captcha").then((response: AxiosResponse<ResponseData>) => {
+                    console.log("aaaaaa")
+                    console.log("aaaaa", JSON.stringify(response))
+                  })
                 })
             }.width('100%').margin({ top: 5 })
           }
