@@ -8,24 +8,29 @@ interface Data {
   Remark?: string
 }
 
-let dataList: Data[] = []
+const GetData = (index: number) => {
+  let dataList: Data[] = []
+  let startInex = index * 20;
+  let enIndex = (index + 1) * 20;
 
-for (let i = 0; i < 1000; i++) {
-  let item: Data = {
-    ImageUrl: `image${i}`,
-    Title: `手写python虚拟机${i}`,
-    Des: `${i}海纳 华为资深编译及专家，原huawei高级资深副总裁级别人物`,
-    Price: i+1,
-    NormalPrice: i+10+1,
+  for (let i = startInex; i < enIndex; i++) {
+    let item: Data = {
+      ImageUrl: `image${i}`,
+      Title: `手写python虚拟机${i}`,
+      Des: `${i}海纳 华为资深编译及专家，原huawei高级资深副总裁级别人物`,
+      Price: i+1,
+      NormalPrice: i+10+1,
+    }
+    dataList.push(item)
   }
-  dataList.push(item)
+  return dataList;
 }
 
 @Entry
 @Component
 export struct Course {
-  @State dataLists: Data[] = dataList
-
+  @State dataLists: Data[] = GetData(0)
+  @State currentIndex: number = 0
   build() {
     List() {
       ForEach(this.dataLists, (item: Data) => {
@@ -158,5 +163,11 @@ export struct Course {
     .scrollBar(BarState.Off)
     .listDirection(Axis.Vertical)
     .alignListItem(ListItemAlign.Center)
+    .onReachEnd(() => {
+      this.currentIndex = this.currentIndex + 1;
+      let list = GetData(this.currentIndex);
+      this.dataLists.push(...list);
+      console.log(`第几行${this.currentIndex}2222`);
+    })
   }
 }

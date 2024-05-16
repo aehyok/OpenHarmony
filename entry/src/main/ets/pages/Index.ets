@@ -5,6 +5,7 @@ import { ToggleView } from "../components/form/ToggleView"
 import { CustomDialogExample } from "./CustomDialogExample"
 import { SwiperExample } from "./SwiperList"
 import { Course } from "./Course"
+
 @Entry
 @Component
 struct Index {
