@@ -53,18 +53,22 @@ export class Instance {
         console.log("Response-axios", JSON.stringify(response))
         return response.data
       }, (error: AxiosError) => {
-      if(error.response && error.response.status)
-      {
-        switch (error.response.status) {
-          case 500:
-            let obj : object = error.response.data as object;
-            error.message = obj["message"] as string;
-            console.log("response-message", error.message)
-            break;
-          default:
-            break;
-        }
-      }
+      console.log("abc")
+      console.log(JSON.stringify(error.response))
+      return error.response
+      // if(error.response && error.response.status)
+      // {
+      //   switch (error.response.status) {
+      //     case 500:
+      //       let obj : object = error.response.data as object;
+      //       error.message = obj["message"] as string;
+      //       console.log("response-message", error.message)
+      //       return error.response.data
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // }
     })
   }
 
