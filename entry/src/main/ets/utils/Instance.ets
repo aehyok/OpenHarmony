@@ -43,15 +43,28 @@ export class Instance {
         config.headers["Content-Type"] = "application/json"
         return config;
     }, (error: AxiosError) => {
-      return Promise.reject(error);
+
+      console.log("Request-axios-error", JSON.stringify(error))
+      return error;
     })
 
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
-
+        console.log("Response-axios", JSON.stringify(response))
         return response.data
       }, (error: AxiosError) => {
-      return Promise.reject(error);
+      if(error.response && error.response.status)
+      {
+        switch (error.response.status) {
+          case 500:
+            let obj : object = error.response.data as object;
+            error.message = obj["message"] as string;
+            console.log("response-message", error.message)
+            break;
+          default:
+            break;
+        }
+      }
     })
   }
 
@@ -63,6 +76,7 @@ export class Instance {
   // POST
   post<T>(url: string, data?: object): Promise<ResponseData<T>> {
     console.log('instance', url)
+    console.log('instance-data', data)
     return this.instance.post(url, data);
   }
 
