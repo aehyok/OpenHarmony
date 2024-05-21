@@ -1,10 +1,7 @@
 import axios, {
   AxiosError,
   AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
-import dataPreferences from '@ohos.data.preferences';
-import preferences from '@ohos.data.preferences';
 import { ResponseData } from '../models';
-import { DEFAULT } from '@ohos/hypium';
 
 const Url: string = ""
 
@@ -25,6 +22,10 @@ const config: Config = {
   baseURL: Url as string,
   timeout: RequestEnums.TIMEOUT as number,
   withCredentials: true
+}
+
+interface  AxiosErrorModel extends  ResponseData <string> {
+
 }
 
 
@@ -55,7 +56,7 @@ export class Instance {
       }, (error: AxiosError) => {
       console.log("abc")
       console.log(JSON.stringify(error.response))
-      return error.response
+      return error.response?.data as AxiosErrorModel;
       // if(error.response && error.response.status)
       // {
       //   switch (error.response.status) {
@@ -63,7 +64,11 @@ export class Instance {
       //       let obj : object = error.response.data as object;
       //       error.message = obj["message"] as string;
       //       console.log("response-message", error.message)
-      //       return error.response.data
+      //
+      //       promptAction.showToast({
+      //         message: 'Message Info',
+      //         duration: 2000
+      //       });
       //       break;
       //     default:
       //       break;
@@ -80,7 +85,7 @@ export class Instance {
   // POST
   post<T>(url: string, data?: object): Promise<ResponseData<T>> {
     console.log('instance', url)
-    console.log('instance-data', data)
+    console.log('instance-data', JSON.stringify(data))
     return this.instance.post(url, data);
   }
 

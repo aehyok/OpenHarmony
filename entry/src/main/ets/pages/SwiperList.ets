@@ -21,7 +21,6 @@ class MyDataSource implements IDataSource {
   }
 }
 
-@Entry
 @Component
 export struct SwiperExample {
   private swiperController: SwiperController = new SwiperController()

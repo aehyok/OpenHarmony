@@ -1,4 +1,3 @@
-
 interface Data {
   ImageUrl: string,
   Title: string,

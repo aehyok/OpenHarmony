@@ -1,14 +1,12 @@
-import hilog from '@ohos.hilog';
-import { BusinessError } from '@ohos.base';
-import UIAbility from '@ohos.app.ability.UIAbility';
-import TestRunner from '@ohos.application.testRunner';
-import AbilityDelegatorRegistry from '@ohos.app.ability.abilityDelegatorRegistry';
-import Want from '@ohos.app.ability.Want';
-import resourceManager from '@ohos.resourceManager';
-import util from '@ohos.util';
+import { abilityDelegatorRegistry, TestRunner } from '@kit.TestKit';
+import { UIAbility, Want } from '@kit.AbilityKit';
+import { BusinessError } from '@kit.BasicServicesKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { resourceManager } from '@kit.LocalizationKit';
+import { util } from '@kit.ArkTS';
 
-let abilityDelegator: AbilityDelegatorRegistry.AbilityDelegator;
-let abilityDelegatorArguments: AbilityDelegatorRegistry.AbilityDelegatorArgs;
+let abilityDelegator: abilityDelegatorRegistry.AbilityDelegator;
+let abilityDelegatorArguments: abilityDelegatorRegistry.AbilityDelegatorArgs;
 let jsonPath: string = 'mock/mock-config.json';
 let tag: string = 'testTag';
 
@@ -31,15 +29,15 @@ export default class OpenHarmonyTestRunner implements TestRunner {
   async onRun() {
     let tag = 'testTag';
     hilog.info(0x0000, tag, '%{public}s', 'OpenHarmonyTestRunner onRun run');
-    abilityDelegatorArguments = AbilityDelegatorRegistry.getArguments()
-    abilityDelegator = AbilityDelegatorRegistry.getAbilityDelegator()
+    abilityDelegatorArguments = abilityDelegatorRegistry.getArguments()
+    abilityDelegator = abilityDelegatorRegistry.getAbilityDelegator()
     let moduleName = abilityDelegatorArguments.parameters['-m'];
     let context = abilityDelegator.getAppContext().getApplicationContext().createModuleContext(moduleName);
     let mResourceManager = context.resourceManager;
     await checkMock(abilityDelegator, mResourceManager);
     const bundleName = abilityDelegatorArguments.bundleName;
     const testAbilityName: string = 'TestAbility';
-    let lMonitor: AbilityDelegatorRegistry.AbilityMonitor = {
+    let lMonitor: abilityDelegatorRegistry.AbilityMonitor = {
       abilityName: testAbilityName,
       onAbilityCreate: onAbilityCreateCallback,
       moduleName: moduleName
@@ -58,7 +56,7 @@ export default class OpenHarmonyTestRunner implements TestRunner {
   }
 }
 
-async function checkMock(abilityDelegator: AbilityDelegatorRegistry.AbilityDelegator, resourceManager: resourceManager.ResourceManager) {
+async function checkMock(abilityDelegator: abilityDelegatorRegistry.AbilityDelegator, resourceManager: resourceManager.ResourceManager) {
   let rawFile: Uint8Array;
   try {
     rawFile = resourceManager.getRawFileContentSync(jsonPath);

@@ -29,6 +29,6 @@ interface  LoginModel {
 }
 
 export const login = async(data: LoginParams) => {
-  console.log(JSON.stringify(data), "login-api")
+  console.log(JSON.stringify(data), "login-api测试")
   return await Request.post<LoginModel>('/api/basic/Token/password', data)
 }

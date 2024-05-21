@@ -5,7 +5,9 @@ import { ToggleView } from "../components/form/ToggleView"
 import { CustomDialogExample } from "./CustomDialogExample"
 import { SwiperExample } from "./SwiperList"
 import { Course } from "./Course"
-import axios, { AxiosResponse } from "@ohos/axios"
+import preferenceUtils from "../utils/LocalStorage"
+import preferences from "@ohos.data.preferences"
+
 interface ResponseData {
   code: number;
   message: string;
@@ -23,9 +25,33 @@ interface CaptchaData {
 @Entry
 @Component
 struct Index {
+  token: preferences.ValueType| undefined = ""
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample(),
   })
+
+  async onPageShow(): Promise<void> {
+    this.token = await preferenceUtils.getValue("token","token", "")
+
+    console.log(JSON.stringify(this.token), "测试onPageShow")
+  }
+
+  async aboutToAppear(): Promise<void> {
+    console.log("测试 组件")
+
+
+    this.token = await preferenceUtils.getValue("token","token", "")
+
+    if(this.token) {
+      router.pushUrl({
+        url: "pages/login/Index"
+      })
+    }
+    else {
+      console.log("token测试")
+      await preferenceUtils.setValue("token", "token", "aehyok")
+    }
+  }
 
   @State currentIndex: number = 0
   @Builder tabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
@@ -69,7 +95,7 @@ struct Index {
               .fontWeight(FontWeight.Bold)
 
             Button() {
-              Text("跳转页面")
+              Text("跳转11页面")
                 .fontSize(30)
                 .fontWeight(FontWeight.Bold)
             }.type(ButtonType.Capsule)
@@ -92,10 +118,7 @@ struct Index {
               Button('click me')
                 .onClick(() => {
                   this.dialogController.open()
-                  axios.get("http://101.200.243.192:8080/api/basic/Token/captcha").then((response: AxiosResponse<ResponseData>) => {
-                    console.log("aaaaaa")
-                    console.log("aaaaa", JSON.stringify(response))
-                  })
+                  this.dialogController.open()
                 })
             }.width('100%').margin({ top: 5 })
           }
