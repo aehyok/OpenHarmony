@@ -7,49 +7,32 @@ import { SwiperExample } from "./SwiperList"
 import { Course } from "./Course"
 import preferenceUtils from "../utils/LocalStorage"
 import preferences from "@ohos.data.preferences"
-
-interface ResponseData {
-  code: number;
-  message: string;
-  data: CaptchaData;
-  timestamp: string;
-}
-
-interface CaptchaData {
-  captcha: string;
-  key: string;
-  expireTime: string;
-}
-
+import { Mine } from "./Mine"
 
 @Entry
 @Component
 struct Index {
-  token: preferences.ValueType| undefined = ""
+  token: preferences.ValueType| undefined = undefined
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample(),
   })
 
   async onPageShow(): Promise<void> {
-    this.token = await preferenceUtils.getValue("token","token", "")
-
-    console.log(JSON.stringify(this.token), "测试onPageShow")
-  }
-
-  async aboutToAppear(): Promise<void> {
-    console.log("测试 组件")
-
-
-    this.token = await preferenceUtils.getValue("token","token", "")
-
-    if(this.token) {
+    this.token = await preferenceUtils.getValue("UserToken","token", "")
+    if(!this.token) {
       router.pushUrl({
         url: "pages/login/Index"
       })
     }
-    else {
-      console.log("token测试")
-      await preferenceUtils.setValue("token", "token", "aehyok")
+  }
+
+  async aboutToAppear(): Promise<void> {
+    this.token = await preferenceUtils.getValue("UserToken","token", "")
+
+    if(!this.token) {
+      router.pushUrl({
+        url: "pages/login/Index"
+      })
     }
   }
 
@@ -139,7 +122,7 @@ struct Index {
       .tabBar(this.tabBuilder('课程', 1, $r('app.media.course'), $r('app.media.course')))
 
       TabContent() {
-        Text('我的内容').fontSize(30)
+        Mine()
       }
       .backgroundColor(Color.Grey)
       .tabBar(this.tabBuilder('我的', 2, $r('app.media.me'), $r('app.media.me')))

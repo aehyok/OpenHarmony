@@ -5,8 +5,8 @@ import  localStorage from "../utils/LocalStorage"
 export default class EntryAbility extends UIAbility {
   async onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): Promise<void> {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
-
-    await localStorage.loadPreference(this.context, "token")
+    // 初始化token缓存策略
+    await localStorage.loadPreference(this.context, "UserToken")
   }
 
   onDestroy(): void {

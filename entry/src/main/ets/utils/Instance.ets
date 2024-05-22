@@ -84,8 +84,7 @@ export class Instance {
 
   // POST
   post<T>(url: string, data?: object): Promise<ResponseData<T>> {
-    console.log('instance', url)
-    console.log('instance-data', JSON.stringify(data))
+    console.log('instance-data测试', JSON.stringify(data))
     return this.instance.post(url, data);
   }
 
