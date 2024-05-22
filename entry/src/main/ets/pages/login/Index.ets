@@ -142,8 +142,8 @@ struct Login {
             .fontSize(14)
             .textAlign(TextAlign.End)
             .fontColor(Color.Blue)
-            .onClick(() => {
-
+            .onClick(async() => {
+              await this.getCaptchaApi()
             })
         }
       }

@@ -8,7 +8,7 @@ import { Course } from "./Course"
 import preferenceUtils from "../utils/LocalStorage"
 import preferences from "@ohos.data.preferences"
 import { Mine } from "./Mine"
-
+import { ModuleList } from "./ModuleList"
 @Entry
 @Component
 struct Index {
@@ -59,6 +59,7 @@ struct Index {
         Row() {
           Column() {
             SwiperExample()
+            ModuleList()
 
             TextView({
               label: "标题",
