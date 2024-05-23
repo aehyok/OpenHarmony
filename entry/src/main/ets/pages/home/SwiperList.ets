@@ -22,7 +22,7 @@ class MyDataSource implements IDataSource {
 }
 
 @Component
-export struct SwiperExample {
+export struct SwiperList {
   private swiperController: SwiperController = new SwiperController()
   private data: MyDataSource = new MyDataSource([])
 

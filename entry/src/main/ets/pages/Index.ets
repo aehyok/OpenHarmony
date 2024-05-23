@@ -3,15 +3,17 @@ import { BusinessError } from "@ohos.base";
 import { TextView } from "../components/form/TextView"
 import { ToggleView } from "../components/form/ToggleView"
 import { CustomDialogExample } from "./CustomDialogExample"
-import { SwiperExample } from "./SwiperList"
-import { Course } from "./Course"
+import { SwiperList } from "./home/SwiperList"
+import { Course } from "./course/Course"
 import preferenceUtils from "../utils/LocalStorage"
 import preferences from "@ohos.data.preferences"
-import { Mine } from "./Mine"
-import { ModuleList } from "./ModuleList"
+import { Mine } from "./mine/Mine"
+import { ModuleList } from "./home/ModuleList"
+import { NewsTabList } from "./NewsTabList"
 @Entry
 @Component
 struct Index {
+  scroller: Scroller = new Scroller()
   token: preferences.ValueType| undefined = undefined
   dialogController: CustomDialogController = new CustomDialogController({
     builder: CustomDialogExample(),
@@ -56,63 +58,74 @@ struct Index {
   build() {
     Tabs({ barPosition: BarPosition.End }) {
       TabContent() {
-        Row() {
-          Column() {
-            SwiperExample()
-            ModuleList()
-
-            TextView({
-              label: "标题",
-              value:"你好啊",
-              placeholder: "请输入标题"
-            });
-            ToggleView({
-              label: "是否参加",
-              value: true,
-            });
-            TextInput({
-              text: this.text,
-              placeholder: "请输入标题"
-            })
-            Text(this.message)
-              .fontSize(50)
-              .fontWeight(FontWeight.Bold)
-
-            Button() {
-              Text("跳转11页面")
-                .fontSize(30)
-                .fontWeight(FontWeight.Bold)
-            }.type(ButtonType.Capsule)
-            .margin({
-              top: 20
-            })
-            .backgroundColor("#0D9FFB")
-            .width("40%")
-            .onClick(() => {
-              console.info(`Succeeded in clicking the 'Next' button.`)
-              // 跳转到第二页
-              router.pushUrl({ url: 'pages/Second' }).then(() => {
-                console.info('Succeeded in jumping to the second page.')
-              }).catch((err: BusinessError) => {
-                console.error(`Failed to jump to the second page.Code is ${err.code}, message is ${err.message}`)
-              })
-            })
-
-            Column() {
-              Button('click me')
-                .onClick(() => {
-                  this.dialogController.open()
-                  this.dialogController.open()
+        Scroll(this.scroller){
+          Column(){
+            Row() {
+              Column() {
+                SwiperList()
+                ModuleList()
+                NewsTabList()
+                TextView({
+                  label: "标题",
+                  value:"你好啊",
+                  placeholder: "请输入标题"
+                });
+                ToggleView({
+                  label: "是否参加",
+                  value: true,
+                });
+                TextInput({
+                  text: this.text,
+                  placeholder: "请输入标题"
                 })
-            }.width('100%').margin({ top: 5 })
+                Text(this.message)
+                  .fontSize(50)
+                  .fontWeight(FontWeight.Bold)
+
+                Button() {
+                  Text("跳转11页面")
+                    .fontSize(30)
+                    .fontWeight(FontWeight.Bold)
+                }.type(ButtonType.Capsule)
+                .margin({
+                  top: 20
+                })
+                .backgroundColor("#0D9FFB")
+                .width("40%")
+                .onClick(() => {
+                  console.info(`Succeeded in clicking the 'Next' button.`)
+                  // 跳转到第二页
+                  router.pushUrl({ url: 'pages/Second' }).then(() => {
+                    console.info('Succeeded in jumping to the second page.')
+                  }).catch((err: BusinessError) => {
+                    console.error(`Failed to jump to the second page.Code is ${err.code}, message is ${err.message}`)
+                  })
+                })
+
+                Column() {
+                  Button('click me')
+                    .onClick(() => {
+                      this.dialogController.open()
+                      this.dialogController.open()
+                    })
+                }.width('100%').margin({ top: 5 })
+
+              }
+              .width('100%')
+            }
+            .alignItems(VerticalAlign.Top )
+            .margin({
+              top: 10
+            })
+
+            Row(){
+              Column(){
+
+              }
+            }
           }
-          .width('100%')
+          .width("100%")
         }
-        .alignItems(VerticalAlign.Top )
-        .margin({
-          top: 10
-        })
-        .height('100%')
       }
       .tabBar(this.tabBuilder('首页', 0, $r('app.media.home'), $r('app.media.home')))
 

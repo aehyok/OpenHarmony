@@ -1,7 +1,7 @@
 {
   "src": [
     "pages/Index",
-    "pages/Course",
+    "pages/course/Course",
     "pages/Second",
     "pages/login/Index"
   ]
