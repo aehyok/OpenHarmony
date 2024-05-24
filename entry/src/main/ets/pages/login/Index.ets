@@ -110,6 +110,7 @@ struct Login {
           justifyContent: FlexAlign.Center
         }){
           TextInput({
+            text: this.captchaValue,
             placeholder: "请输入验证码",
           })
             .showError(this.captchaError)
@@ -144,6 +145,7 @@ struct Login {
             .fontColor(Color.Blue)
             .onClick(async() => {
               await this.getCaptchaApi()
+              this.captchaValue=""
             })
         }
       }
