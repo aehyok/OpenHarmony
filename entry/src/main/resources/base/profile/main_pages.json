@@ -3,6 +3,8 @@
     "pages/Index",
     "pages/course/Course",
     "pages/Second",
-    "pages/login/Index"
+    "pages/login/Index",
+    "pages/webView/Index",
+    "pages/course/Detail"
   ]
 }

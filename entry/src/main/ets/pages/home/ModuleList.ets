@@ -4,10 +4,11 @@ import router from '@ohos.router'
 interface  ModuleData {
   iconUrl: string
   name: string
+  key?: string
 }
 
 const moduleDataList: Array<ModuleData> = []
-moduleDataList.push({ iconUrl: "app.media.zpqz", name: "随手拍1"})
+moduleDataList.push({ iconUrl: "app.media.zpqz", name: "webView", key: "webView"})
 moduleDataList.push({ iconUrl: "app.media.ckbt", name: "随手拍2"})
 moduleDataList.push({ iconUrl: "app.media.fwzx", name: "随手拍3"})
 moduleDataList.push({ iconUrl: "app.media.lxcw", name: "随手拍4"})
@@ -41,12 +42,18 @@ export struct ModuleList {
             }
           }
           .onClick(() => {
-            router.pushUrl({
-              url: "pages/Second"
-            })
+            if(item.key === 'webView') {
+              router.pushUrl({
+                url: "pages/webView/Index"
+              })
+            } else {
+              router.pushUrl({
+                url: "pages/Second"
+              })
+            }
           })
           // .backgroundColor(Color.Red)
-          .height(90)
+          .height(80)
       })
     }
     .columnsTemplate('1fr 1fr 1fr 1fr')

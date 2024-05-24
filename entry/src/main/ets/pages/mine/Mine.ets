@@ -1,3 +1,6 @@
+import localStorage from "../../utils/LocalStorage"
+import router from '@ohos.router'
+
 @Entry
 @Component
 export struct Mine {
@@ -200,6 +203,12 @@ export struct Mine {
           .fontWeight(500)
           .fontColor(Color.Black)
           .backgroundColor(Color.White)
+          .onClick(async() => {
+            await localStorage.deleteValue("UserToken", "token")
+            router.pushUrl({
+              url: "pages/Index"
+            })
+          })
       }
       .height('100%')
       .width('100%')

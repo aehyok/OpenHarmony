@@ -1,4 +1,5 @@
 import { PullToRefresh } from '@ohos/pulltorefresh'
+import router from '@ohos.router';
 
 const NEWS_RESOLVE_SUCCESS : string = '刷新成功';
 const NEWS_REFRESH_TIME: number = 1500; // 数据刷新时间
@@ -302,7 +303,11 @@ export struct Course {
           .margin({
             bottom:20
           })
-        }
+        }.onClick(() => {
+          router.pushUrl({
+            url: "pages/course/Detail"
+          })
+        })
       })
     }
     .backgroundColor(Color.White)
@@ -330,50 +335,55 @@ export struct Course {
 
   build() {
     Column() {
-      PullToRefresh({
-        // TODO: 知识点：使用PullToRefresh组件时需要先绑定数据与主体布局。若使用LazyForEach组件渲染列表时，需将UI方法使用@Builder修饰并传入customList属性中。
-        // 必传项，列表组件所绑定的数据
-        data: $newsData,
-        // refreshText: "正在刷新课程列表",
-        // loadText: "正在加载课程列表",
-        // 必传项，需绑定传入主体布局内的列表或宫格组件
-        scroller: this.scroller,
-        // 必传项，自定义主体布局，内部有列表或宫格组件
-        customList: () => {
-          // 一个用@Builder修饰过的UI方法
-          this.getListView();
-        },
-        // TODO: 知识点：设置onRefresh下拉刷新回调方法，该方法必须返回一个Promise类型。
-        onRefresh: () => {
-          return new Promise<string>((resolve, reject) => {
-            // 模拟网络请求操作，请求网络1.5秒后得到数据，通知组件，变更列表数据
-            setTimeout(() => {
-              this.newsData.clear();
+      Navigation(){
+        PullToRefresh({
+          // TODO: 知识点：使用PullToRefresh组件时需要先绑定数据与主体布局。若使用LazyForEach组件渲染列表时，需将UI方法使用@Builder修饰并传入customList属性中。
+          // 必传项，列表组件所绑定的数据
+          data: $newsData,
+          // refreshText: "正在刷新课程列表",
+          // loadText: "正在加载课程列表",
+          // 必传项，需绑定传入主体布局内的列表或宫格组件
+          scroller: this.scroller,
+          // 必传项，自定义主体布局，内部有列表或宫格组件
+          customList: () => {
+            // 一个用@Builder修饰过的UI方法
+            this.getListView();
+          },
+          // TODO: 知识点：设置onRefresh下拉刷新回调方法，该方法必须返回一个Promise类型。
+          onRefresh: () => {
+            return new Promise<string>((resolve, reject) => {
+              // 模拟网络请求操作，请求网络1.5秒后得到数据，通知组件，变更列表数据
+              setTimeout(() => {
+                this.newsData.clear();
 
-              getNewsData(1).forEach((item) => {
-                this.newsData.pushData(item);
-              })
+                getNewsData(1).forEach((item) => {
+                  this.newsData.pushData(item);
+                })
 
-              resolve(NEWS_RESOLVE_SUCCESS)
-            }, NEWS_REFRESH_TIME);
-          });
-        },
-        // TODO: 知识点：设置onLoadMore上滑加载更多数据回调方法，该方法必须返回一个Promise类型。
-        onLoadMore: () => {
-          return new Promise<string>((resolve, reject) => {
-            // 模拟网络请求操作，请求网络1.5秒后得到数据，通知组件，变更列表数据
-            setTimeout(() => {
-              let newsModelMockData: Array<NewsData> = getNewsData(this.currentIndex)
-              for (let j = 0; j < NEWS_MOCK_DATA_COUNT; j++) {
-                this.newsData.pushData(newsModelMockData[j]);
-              }
-              resolve(NEWS_RESOLVE_SUCCESS)
-            }, NEWS_REFRESH_TIME);
-          });
-        },
-        customLoad: null,
-        customRefresh: null
-      })
+                resolve(NEWS_RESOLVE_SUCCESS)
+              }, NEWS_REFRESH_TIME);
+            });
+          },
+          // TODO: 知识点：设置onLoadMore上滑加载更多数据回调方法，该方法必须返回一个Promise类型。
+          onLoadMore: () => {
+            return new Promise<string>((resolve, reject) => {
+              // 模拟网络请求操作，请求网络1.5秒后得到数据，通知组件，变更列表数据
+              setTimeout(() => {
+                let newsModelMockData: Array<NewsData> = getNewsData(this.currentIndex)
+                for (let j = 0; j < NEWS_MOCK_DATA_COUNT; j++) {
+                  this.newsData.pushData(newsModelMockData[j]);
+                }
+                resolve(NEWS_RESOLVE_SUCCESS)
+              }, NEWS_REFRESH_TIME);
+            });
+          },
+          customLoad: null,
+          customRefresh: null
+        })
+      }
+      .size({width: "100%", height: "100%"})
+      .titleMode(NavigationTitleMode.Free)
+      .title("WebView")
     }
     .height("100%")
   }
